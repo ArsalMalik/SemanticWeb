@@ -1,0 +1,470 @@
+<html>
+  <head>
+    <title>Semantic Web | Mavericks</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"
+   			integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+    		crossorigin="anonymous">
+    </script>
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+		  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" 
+		  integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+			integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="http://mgskjaeveland.github.io/sgvizler/v/0.6/sgvizler.js"></script>
+
+    <script>
+      $(document).ready(
+          function (){ sgvizler.containerDrawAll(); }
+      );
+    </script>
+  </head>
+  
+  <body style="background-color: #F5F4F3">
+    
+		<div style="background-color: black; text-align: center; color: white" class="jumbotron">
+			<div class="container"> 
+		  		<div class="col-xs-6 col-md-8 col-lg-8 pull-left">
+		  			<h1>Heart Disease Mortality <br>vs <br>Tobacco Use<br></h1>
+		  			<h2><small> Arsalan Malik &amp; Teja Kiran Chunduri</br>
+		  			</br><b>Team MAVERICKS</b></small></h2>
+		  		</div>
+		  		<div class="col-xs-6 col-md-4 col-lg-3 pull-right">
+		    		<a style="background-color: black" class="thumbnail pull-right">
+		      		<img src="image.jpg" class="img-rounded" alt="Cant find image">
+		    		</a>
+		 		</div>
+		 	</div>
+		 </div>
+
+		 <div style="padding-top: 0px; margin-top: -30px; background-color: #BABAB3" class="alert" role="alert">
+		  		<h3>To view Heart Disease Mortality Rate vs Tobacco Use data based on a particular race, select the respective tab!</h3>
+		  </div>
+		  <br>
+		  <br>
+		  <!-- Nav tabs -->
+		  <div class="col-lg-offset-3">
+		  	<ul class="nav nav-pills" >
+			    <li class="active"><a href="#White" data-toggle="tab">White</a></li>
+			    <li><a href="#Hispanic" data-toggle="tab">Hispanic</a></li>
+			    <li><a href="#Asian" data-toggle="tab">Asian/Pacific Islander</a></li>
+			    <li><a href="#Black" data-toggle="tab">African American</a></li>
+			    <li><a href="#Native" data-toggle="tab">American Indian/Alaskan Native</a></li>    
+			</ul>
+		  </div>
+		  
+
+		 <div class="col-lg-offset-1 col-md-offset-2 col-lg-10">
+			<div class="tab-content"> 
+		 		<div role="tabpanel" class="tab-pane fade in active" id="White">
+			 		<div style="margin-top: 20px;" class="thumbnail">
+			 			<div class="caption center-block">
+			 				<div id="1"
+						         data-sgvizler-endpoint="http://localhost:3030/SemWeb/query"
+					         	 data-sgvizler-query = "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+						                                PREFIX hm:<http://chronicdata.cdc.gov/resource/r35g-znws/>
+										                PREFIX tu:<http://chronicdata.cdc.gov/resource/wsas-xwh5/>
+										                SELECT (xsd:string(?state)) 
+										                	   ((((xsd:float(?datavalue1))/(xsd:float(439.4))) * xsd:float(100)) as ?HeartMortalityRate)
+										                	   ((((xsd:float(?datavalue2))/(xsd:float(26))) * xsd:float(100)) AS ?AverageTobaccoUse)     
+										                WHERE{
+										                  GRAPH <http://localhost:3030/SemWeb/data/HeartDisease>
+										                  {
+										                  ?s hm:LocationAbbr ?state;  
+										                    hm:GeographicLevel &quot;State&quot;;
+										                    hm:Gender &quot;Overall&quot;;
+										                    hm:Race_Ethnicity &quot;White&quot;;
+										                    hm:Data_Value ?datavalue1
+										                  }
+										                  GRAPH <http://localhost:3030/SemWeb/data/TobaccoUse>
+										                  {
+										                  ?s2 tu:LocationAbbr ?state;
+										                    tu:YEAR &quot;2014-2015&quot;;
+										                    tu:Gender &quot;Overall&quot;; 
+										                    tu:Age &quot;All Ages&quot;; 
+										                    tu:Race &quot;White&quot;;
+										                    tu:Sample_Size ?samplesize;
+										                    tu:Data_Value_in_precentage ?datavalue2
+										                    }}
+										                Order BY ?state
+										                LIMIT 100"
+					        
+						         data-sgvizler-chart="google.visualization.GeoChart" 
+						         data-sgvizler-chart-options="region=US|resolution=provinces"
+								 style="width:1070px; height:500px;">
+							</div>
+					   </div>
+					</div>
+
+				  <div style="margin-top: 100px;" class="thumbnail">
+		 			<div style="align-items: center" class="caption center-block">
+		 	 			<div id="2"
+					         data-sgvizler-endpoint="http://localhost:3030/SemWeb/query"
+					         data-sgvizler-query = "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+					                                PREFIX hm:<http://chronicdata.cdc.gov/resource/r35g-znws/>
+									                PREFIX tu:<http://chronicdata.cdc.gov/resource/wsas-xwh5/>
+									                SELECT (xsd:string(?state)) 
+									                	   ((((xsd:float(?datavalue1))/(xsd:float(439.4))) * xsd:float(100)) as ?HeartMortalityRate)
+									                	   ((((xsd:float(?datavalue2))/(xsd:float(26))) * xsd:float(100)) AS ?AverageTobaccoUse)     
+									                WHERE{
+									                  GRAPH <http://localhost:3030/SemWeb/data/HeartDisease>
+									                  {
+									                  ?s hm:LocationAbbr ?state;  
+									                    hm:GeographicLevel &quot;State&quot;;
+									                    hm:Gender &quot;Overall&quot;;
+									                    hm:Race_Ethnicity &quot;White&quot;;
+									                    hm:Data_Value ?datavalue1
+									                  }
+									                  GRAPH <http://localhost:3030/SemWeb/data/TobaccoUse>
+									                  {
+									                  ?s2 tu:LocationAbbr ?state;
+									                    tu:YEAR &quot;2014-2015&quot;;
+									                    tu:Gender &quot;Overall&quot;; 
+									                    tu:Age &quot;All Ages&quot;; 
+									                    tu:Race &quot;White&quot;;
+									                    tu:Sample_Size ?samplesize;
+									                    tu:Data_Value_in_precentage ?datavalue2
+									                    }}
+									                Order BY ?state
+									                LIMIT 100"
+					        
+					         data-sgvizler-chart="google.visualization.LineChart"
+					         data-sgvizler-options="hAxis.title=AverageTobaccoUse|vAxis=HeartMortalityRate"
+							 style="width:1070px; height:300px;">
+						</div>
+					</div>
+				</div>
+		         </div>
+		         	
+		        
+		         
+		   <div role="tabpanel" class="tab-pane fade" id="Hispanic">
+		   	 <div style="margin-top: 20px;" class="thumbnail">
+		 		<div style="align-items: center" class="caption center-block">
+		   			<div id="3"
+				         data-sgvizler-endpoint="http://localhost:3030/SemWeb/query"
+				         data-sgvizler-query = "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+				                                PREFIX hm:<http://chronicdata.cdc.gov/resource/r35g-znws/>
+								                PREFIX tu:<http://chronicdata.cdc.gov/resource/wsas-xwh5/>
+								                SELECT (xsd:string(?state)) 
+								                	   ((((xsd:float(?datavalue1))/(xsd:float(394.6))) * xsd:float(100)) as ?HeartMortalityRate)
+								                       ((((xsd:float(?datavalue2))/(xsd:float(30.3))) * xsd:float(100)) AS ?AverageTobaccoUse)     
+								                WHERE{
+								                  GRAPH <http://localhost:3030/SemWeb/data/HeartDisease>
+								                  {
+								                  ?s hm:LocationAbbr ?state;  
+								                    hm:GeographicLevel &quot;State&quot;;
+								                    hm:Gender &quot;Overall&quot;;
+								                    hm:Race_Ethnicity &quot;Hispanic&quot;;
+								                    hm:Data_Value ?datavalue1
+								                  }
+								                  GRAPH <http://localhost:3030/SemWeb/data/TobaccoUse>
+								                  {
+								                  ?s2 tu:LocationAbbr ?state;
+								                    tu:YEAR &quot;2014-2015&quot;;
+								                    tu:Gender &quot;Overall&quot;; 
+								                    tu:Age &quot;All Ages&quot;; 
+								                    tu:Race &quot;Hispanic&quot;;
+								                    tu:Sample_Size ?samplesize;
+								                    tu:Data_Value_in_precentage ?datavalue2
+								                    }}
+								                Order BY ?state
+								                LIMIT 100"
+				        
+				         data-sgvizler-chart="google.visualization.GeoChart"
+				         data-sgvizler-chart-options="is3D=true|region=US|resolution=provinces"
+				         style="width:1070px; height:500px;">
+				     </div>
+				</div>
+			</div>
+
+		    <div style="margin-top: 100px;" class="thumbnail">
+		 		<div style="align-items: center" class="caption center-block">
+		        	<div id="4"
+				         data-sgvizler-endpoint="http://localhost:3030/SemWeb/query"
+				         data-sgvizler-query = "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+				                                PREFIX hm:<http://chronicdata.cdc.gov/resource/r35g-znws/>
+								                PREFIX tu:<http://chronicdata.cdc.gov/resource/wsas-xwh5/>
+								                SELECT (xsd:string(?state)) 
+								                	   ((((xsd:float(?datavalue1))/(xsd:float(394.6))) * xsd:float(100)) as ?HeartMortalityRate)
+								                	   ((((xsd:float(?datavalue2))/(xsd:float(30.3))) * xsd:float(100)) AS ?AverageTobaccoUse)     
+								                WHERE{
+								                  GRAPH <http://localhost:3030/SemWeb/data/HeartDisease>
+								                  {
+								                  ?s hm:LocationAbbr ?state;  
+								                    hm:GeographicLevel &quot;State&quot;;
+								                    hm:Gender &quot;Overall&quot;;
+								                    hm:Race_Ethnicity &quot;Hispanic&quot;;
+								                    hm:Data_Value ?datavalue1
+								                  }
+								                  GRAPH <http://localhost:3030/SemWeb/data/TobaccoUse>
+								                  {
+								                  ?s2 tu:LocationAbbr ?state;
+								                    tu:YEAR &quot;2014-2015&quot;;
+								                    tu:Gender &quot;Overall&quot;; 
+								                    tu:Age &quot;All Ages&quot;; 
+								                    tu:Race &quot;Hispanic&quot;;
+								                    tu:Sample_Size ?samplesize;
+								                    tu:Data_Value_in_precentage ?datavalue2
+								                    }}
+								                Order BY ?state
+								                LIMIT 100"
+				        
+				         data-sgvizler-chart="google.visualization.LineChart"
+				         data-sgvizler-options="hAxis.title=AverageTobaccoUse|vAxis=HeartMortalityRate"
+				         style="width:1070px; height:300px;">
+				    </div>
+				</div>
+			</div>
+		</div>
+		         	 
+
+		<div role="tabpanel" class="tab-pane fade" id="Black">
+			<div style="margin-top: 20px;" class="thumbnail">
+		 		<div style="align-items: center" class="caption center-block">
+					<div id="5"
+				         data-sgvizler-endpoint="http://localhost:3030/SemWeb/query"
+		        		 data-sgvizler-query = "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+		                                PREFIX hm:<http://chronicdata.cdc.gov/resource/r35g-znws/>
+						                PREFIX tu:<http://chronicdata.cdc.gov/resource/wsas-xwh5/>
+						                SELECT (xsd:string(?state)) 
+						                	   ((((xsd:float(?datavalue1))/(xsd:float(540.5))) * xsd:float(100)) as ?HeartMortalityRate)
+						                	   ((((xsd:float(?datavalue2))/(xsd:float(46.7))) * xsd:float(100)) AS ?AverageTobaccoUse)     
+						                WHERE{
+						                  GRAPH <http://localhost:3030/SemWeb/data/HeartDisease>
+						                  {
+						                  ?s hm:LocationAbbr ?state;  
+						                    hm:GeographicLevel &quot;State&quot;;
+						                    hm:Gender &quot;Overall&quot;;
+						                    hm:Race_Ethnicity &quot;Black&quot;;
+						                    hm:Data_Value ?datavalue1
+						                  }
+						                  GRAPH <http://localhost:3030/SemWeb/data/TobaccoUse>
+						                  {
+						                  ?s2 tu:LocationAbbr ?state;
+						                    tu:YEAR &quot;2014-2015&quot;;
+						                    tu:Gender &quot;Overall&quot;; 
+						                    tu:Age &quot;All Ages&quot;; 
+						                    tu:Race &quot;African American&quot;;
+						                    tu:Sample_Size ?samplesize;
+						                    tu:Data_Value_in_precentage ?datavalue2
+						                    }}
+						                Order BY ?state
+						                LIMIT 100"
+		        
+				         data-sgvizler-chart="google.visualization.GeoChart"
+				         data-sgvizler-chart-options="is3D=true|region=US|resolution=provinces"
+				         style="width:1070px; height:500px;">
+				    </div>
+				</div>
+			</div>
+
+		    <div style="margin-top: 100px;" class="thumbnail">
+		 		<div style="align-items: center" class="caption center-block">
+		        	 <div id="6"
+				         data-sgvizler-endpoint="http://localhost:3030/SemWeb/query"
+		        		 data-sgvizler-query = "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+		                                PREFIX hm:<http://chronicdata.cdc.gov/resource/r35g-znws/>
+						                PREFIX tu:<http://chronicdata.cdc.gov/resource/wsas-xwh5/>
+						                SELECT (xsd:string(?state)) 
+						                	   ((((xsd:float(?datavalue1))/(xsd:float(540.5))) * xsd:float(100)) as ?HeartMortalityRate)
+						                	   ((((xsd:float(?datavalue2))/(xsd:float(46.7))) * xsd:float(100)) AS ?AverageTobaccoUse)     
+						                WHERE{
+						                  GRAPH <http://localhost:3030/SemWeb/data/HeartDisease>
+						                  {
+						                  ?s hm:LocationAbbr ?state;  
+						                    hm:GeographicLevel &quot;State&quot;;
+						                    hm:Gender &quot;Overall&quot;;
+						                    hm:Race_Ethnicity &quot;Black&quot;;
+						                    hm:Data_Value ?datavalue1
+						                  }
+						                  GRAPH <http://localhost:3030/SemWeb/data/TobaccoUse>
+						                  {
+						                  ?s2 tu:LocationAbbr ?state;
+						                    tu:YEAR &quot;2014-2015&quot;;
+						                    tu:Gender &quot;Overall&quot;; 
+						                    tu:Age &quot;All Ages&quot;; 
+						                    tu:Race &quot;African American&quot;;
+						                    tu:Sample_Size ?samplesize;
+						                    tu:Data_Value_in_precentage ?datavalue2
+						                    }}
+						                Order BY ?state
+						                LIMIT 100"
+		        
+				         data-sgvizler-chart="google.visualization.LineChart"
+				         data-sgvizler-options="hAxis.title=AverageTobaccoUse|vAxis=HeartMortalityRate"
+				         style="width:1070px; height:300px;">
+				    </div>
+				</div>
+			</div>
+		</div>
+		       
+
+		<div role="tabpanel" class="tab-pane fade" id="Asian">
+		    <div style="margin-top: 20px;" class="thumbnail">
+		 		<div style="align-items: center" class="caption center-block">
+		        	<div id="7"
+				         data-sgvizler-endpoint="http://localhost:3030/SemWeb/query"
+				         data-sgvizler-query = "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+				                                PREFIX hm:<http://chronicdata.cdc.gov/resource/r35g-znws/>
+								                PREFIX tu:<http://chronicdata.cdc.gov/resource/wsas-xwh5/>
+								                SELECT (xsd:string(?state)) 
+								                	   ((((xsd:float(?datavalue1))/(xsd:float(254.6))) * xsd:float(100)) as ?HeartMortalityRate)
+								                	   ((((xsd:float(?datavalue2))/(xsd:float(31.3))) * xsd:float(100)) AS ?AverageTobaccoUse)     
+								                WHERE{
+								                  GRAPH <http://localhost:3030/SemWeb/data/HeartDisease>
+								                  {
+								                  ?s hm:LocationAbbr ?state;  
+								                    hm:GeographicLevel &quot;State&quot;;
+								                    hm:Gender &quot;Overall&quot;;
+								                    hm:Race_Ethnicity &quot;Asian and Pacific Islander&quot;;
+								                    hm:Data_Value ?datavalue1
+								                  }
+								                  GRAPH <http://localhost:3030/SemWeb/data/TobaccoUse>
+								                  {
+								                  ?s2 tu:LocationAbbr ?state;
+								                    tu:YEAR &quot;2014-2015&quot;;
+								                    tu:Gender &quot;Overall&quot;; 
+								                    tu:Age &quot;All Ages&quot;; 
+								                    tu:Race &quot;Asian/Pacific Islander&quot;;
+								                    tu:Sample_Size ?samplesize;
+								                    tu:Data_Value_in_precentage ?datavalue2
+								                    }}
+								                Order BY ?state
+								                LIMIT 100"
+				        
+				         data-sgvizler-chart="google.visualization.GeoChart"
+				         data-sgvizler-chart-options="is3D=true|region=US|resolution=provinces"
+				         style="width:1070px; height:500px;">
+				    </div>
+				</div>
+			</div>
+
+		    <div style="margin-top: 100px;" class="thumbnail">
+		 		<div style="align-items: center" class="caption center-block">
+		        	<div id="8"
+				         data-sgvizler-endpoint="http://localhost:3030/SemWeb/query"
+				         data-sgvizler-query = "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+				                                PREFIX hm:<http://chronicdata.cdc.gov/resource/r35g-znws/>
+								                PREFIX tu:<http://chronicdata.cdc.gov/resource/wsas-xwh5/>
+								                SELECT (xsd:string(?state)) 
+								                	   ((((xsd:float(?datavalue1))/(xsd:float(254.6))) * xsd:float(100)) as ?HeartMortalityRate)
+								                	   ((((xsd:float(?datavalue2))/(xsd:float(31.3))) * xsd:float(100)) AS ?AverageTobaccoUse)     
+								                WHERE{
+								                  GRAPH <http://localhost:3030/SemWeb/data/HeartDisease>
+								                  {
+								                  ?s hm:LocationAbbr ?state;  
+								                    hm:GeographicLevel &quot;State&quot;;
+								                    hm:Gender &quot;Overall&quot;;
+								                    hm:Race_Ethnicity &quot;Asian and Pacific Islander&quot;;
+								                    hm:Data_Value ?datavalue1
+								                  }
+								                  GRAPH <http://localhost:3030/SemWeb/data/TobaccoUse>
+								                  {
+								                  ?s2 tu:LocationAbbr ?state;
+								                    tu:YEAR &quot;2014-2015&quot;;
+								                    tu:Gender &quot;Overall&quot;; 
+								                    tu:Age &quot;All Ages&quot;; 
+								                    tu:Race &quot;Asian/Pacific Islander&quot;;
+								                    tu:Sample_Size ?samplesize;
+								                    tu:Data_Value_in_precentage ?datavalue2
+								                    }}
+								                Order BY ?state
+								                LIMIT 100"
+				        
+				         data-sgvizler-chart="google.visualization.LineChart"
+				         data-sgvizler-options="hAxis.title=AverageTobaccoUse|vAxis=HeartMortalityRate"
+				         style="width:1070px; height:300px;">
+				    </div>
+				</div>
+			</div>
+		</div>
+
+		         
+		<div role="tabpanel" class="tab-pane fade" id="Native">
+		    <div style="margin-top: 20px;" class="thumbnail">
+		 		<div style="align-items: center" class="caption center-block">
+		         	<div id="9"
+				         data-sgvizler-endpoint="http://localhost:3030/SemWeb/query"
+				         data-sgvizler-query = "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+				                                PREFIX hm:<http://chronicdata.cdc.gov/resource/r35g-znws/>
+								                PREFIX tu:<http://chronicdata.cdc.gov/resource/wsas-xwh5/>
+								                SELECT (xsd:string(?state)) 
+								                	   ((((xsd:float(?datavalue1))/(xsd:float(531.6))) * xsd:float(100)) as ?HeartMortalityRate)
+								                	   ((((xsd:float(?datavalue2))/(xsd:float(52.2))) * xsd:float(100)) AS ?AverageTobaccoUse)     
+								                WHERE{
+								                  GRAPH <http://localhost:3030/SemWeb/data/HeartDisease>
+								                  {
+								                  ?s hm:LocationAbbr ?state;  
+								                    hm:GeographicLevel &quot;State&quot;;
+								                    hm:Gender &quot;Overall&quot;;
+								                    hm:Race_Ethnicity &quot;American Indian and Alaskan Native&quot;;
+								                    hm:Data_Value ?datavalue1
+								                  }
+								                  GRAPH <http://localhost:3030/SemWeb/data/TobaccoUse>
+								                  {
+								                  ?s2 tu:LocationAbbr ?state;
+								                    tu:YEAR &quot;2014-2015&quot;;
+								                    tu:Gender &quot;Overall&quot;; 
+								                    tu:Age &quot;All Ages&quot;; 
+								                    tu:Race &quot;American Indian/Alaska Native&quot;;
+								                    tu:Sample_Size ?samplesize;
+								                    tu:Data_Value_in_precentage ?datavalue2
+								                    }}
+								                Order BY ?state
+								                LIMIT 100"
+								        
+								         data-sgvizler-chart="google.visualization.GeoChart"
+								         data-sgvizler-chart-options="is3D=true|region=US|backgroundColor=White|resolution=provinces"
+								         style="width:1070px; height:500px;">
+					</div>
+				</div>
+			</div>
+
+		    <div style="margin-top: 100px;" class="thumbnail">
+		 		<div style="align-items: center" class="caption center-block">
+		         	<div id="10"
+				         data-sgvizler-endpoint="http://localhost:3030/SemWeb/query"
+				         data-sgvizler-query = "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+				                                PREFIX hm:<http://chronicdata.cdc.gov/resource/r35g-znws/>
+				                				PREFIX tu:<http://chronicdata.cdc.gov/resource/wsas-xwh5/>
+								                SELECT (xsd:string(?state)) 
+								                	   ((((xsd:float(?datavalue1))/(xsd:float(531.6))) * xsd:float(100)) as ?HeartMortalityRate) 
+								                	   ((((xsd:float(?datavalue2))/(xsd:float(52.2))) * xsd:float(100)) AS ?AverageTobaccoUse)     
+								                WHERE{
+								                  GRAPH <http://localhost:3030/SemWeb/data/HeartDisease>
+								                  {
+								                  ?s hm:LocationAbbr ?state;  
+								                    hm:GeographicLevel &quot;State&quot;;
+								                    hm:Gender &quot;Overall&quot;;
+								                    hm:Race_Ethnicity &quot;American Indian and Alaskan Native&quot;;
+								                    hm:Data_Value ?datavalue1
+								                  }
+								                  GRAPH <http://localhost:3030/SemWeb/data/TobaccoUse>
+								                  {
+								                  ?s2 tu:LocationAbbr ?state;
+								                    tu:YEAR &quot;2014-2015&quot;;
+								                    tu:Gender &quot;Overall&quot;; 
+								                    tu:Age &quot;All Ages&quot;; 
+								                    tu:Race &quot;American Indian/Alaska Native&quot;;
+								                    tu:Sample_Size ?samplesize;
+								                    tu:Data_Value_in_precentage ?datavalue2
+								                    }}
+								                Order BY ?state
+								                LIMIT 100"
+				        
+				         data-sgvizler-chart="google.visualization.LineChart"
+				         data-sgvizler-options="hAxis.title=AverageTobaccoUse|vAxis=HeartMortalityRate"
+				         style="width:1070px; height:300px;">
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
